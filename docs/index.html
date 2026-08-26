@@ -6,101 +6,241 @@
   <title>Askania Coepenick Futsal — 2026/27 fixtures</title>
   <meta name="description" content="Askania Coepenick futsal fixtures for the 2026/27 Berlin-Liga season. View upcoming games and subscribe for automatic updates." />
   <link rel="preconnect" href="https://cdn.jsdelivr.net" />
+  <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.21/index.global.min.js" defer></script>
   <style>
-    :root { --blue:#0879bd; --red:#d20b20; --ink:#172033; --muted:#667085; --line:#e5e7eb; --paper:#fff; --soft:#f6f8fb; font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif; }
+    :root {
+      --blue:#0879bd;
+      --red:#d20b20;
+      --ink:#10203b;
+      --muted:#6b7280;
+      --line:#e6e9ef;
+      --soft:#f7f8fa;
+      --paper:#fff;
+      font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Inter,Roboto,sans-serif;
+    }
     * { box-sizing:border-box; }
-    body { margin:0; background:var(--soft); color:var(--ink); }
-    .hero { background:linear-gradient(115deg,#0879bd 0 49%,#d20b20 49% 52%,#fff 52% 55%,#0879bd 55% 100%); color:#fff; }
-    .hero-inner { width:min(980px,calc(100% - 32px)); margin:auto; min-height:220px; display:flex; align-items:center; gap:28px; padding:32px 0; }
-    .crest { width:150px; height:150px; object-fit:contain; background:#fff; border-radius:24px; padding:8px; box-shadow:0 8px 28px #001b3550; flex:none; }
-    h1 { margin:0 0 8px; font-size:clamp(2rem,5vw,3.7rem); line-height:.95; letter-spacing:-.045em; text-shadow:0 2px 12px #001b3540; }
-    .kicker { font-size:.8rem; text-transform:uppercase; letter-spacing:.16em; font-weight:800; margin-bottom:12px; }
-    .hero p { margin:0; font-size:1.05rem; font-weight:600; }
-    main { width:min(980px,calc(100% - 32px)); margin:28px auto 56px; }
-    .card { background:var(--paper); border:1px solid var(--line); border-radius:18px; padding:22px; margin:18px 0; box-shadow:0 8px 28px #1018280a; }
-    .section-head { display:flex; align-items:end; justify-content:space-between; gap:16px; margin-bottom:18px; }
-    h2 { margin:0; font-size:1.25rem; }
-    .muted { color:var(--muted); }
-    #calendar { min-height:280px; }
-    .fc { --fc-border-color:var(--line); --fc-button-bg-color:var(--blue); --fc-button-border-color:var(--blue); --fc-button-hover-bg-color:#0569a5; --fc-button-hover-border-color:#0569a5; --fc-event-bg-color:var(--blue); --fc-event-border-color:var(--blue); font-size:.94rem; }
-    .fc .fc-toolbar-title { font-size:1.15rem; }
-    .actions { display:grid; grid-template-columns:repeat(4,1fr); gap:10px; margin-top:16px; }
-    a.button,button { appearance:none; border:1px solid var(--line); border-radius:12px; background:#fff; color:var(--ink); padding:13px 12px; min-height:48px; font:inherit; font-weight:700; text-decoration:none; text-align:center; cursor:pointer; }
-    a.button.primary { background:var(--blue); color:#fff; border-color:var(--blue); }
-    a.button:hover,button:hover { border-color:#98a2b3; }
-    .feed { display:flex; gap:10px; align-items:center; background:var(--soft); border-radius:12px; padding:12px 14px; margin-top:16px; }
-    code { overflow-wrap:anywhere; font-size:.82rem; flex:1; }
-    .feed button { width:auto; min-height:38px; padding:8px 12px; flex:none; }
-    .status { min-height:1.4em; margin:8px 0 0; color:var(--muted); font-size:.88rem; }
+    html { background:#fff; }
+    body { margin:0; background:#fff; color:var(--ink); }
+    a { color:inherit; }
+    .wrap { width:min(1040px,calc(100% - 32px)); margin:auto; }
+    header { border-bottom:1px solid var(--line); }
+    .masthead { display:flex; align-items:center; gap:22px; padding:34px 0 30px; }
+    .crest { width:104px; height:104px; object-fit:contain; flex:none; }
+    h1 { margin:0; font-size:clamp(1.9rem,4vw,3.15rem); line-height:1.02; letter-spacing:-.04em; }
+    .season { margin-top:7px; color:var(--muted); font-size:clamp(1rem,2vw,1.25rem); letter-spacing:.03em; }
+    main { padding:28px 0 48px; }
+    .section { padding:26px 0; border-bottom:1px solid var(--line); }
+    .section:first-child { padding-top:0; }
+    .section:last-of-type { border-bottom:0; }
+    .section-head { display:flex; justify-content:space-between; align-items:end; gap:16px; margin-bottom:18px; }
+    h2 { margin:0; font-size:1.35rem; letter-spacing:-.02em; }
+    .muted { color:var(--muted); line-height:1.5; }
+    .calendar-shell { border:1px solid var(--line); border-radius:14px; overflow:hidden; background:var(--paper); }
+    #calendar { min-height:280px; padding:18px; }
+    .fc { --fc-border-color:var(--line); --fc-button-bg-color:#fff; --fc-button-border-color:var(--line); --fc-button-text-color:var(--ink); --fc-button-hover-bg-color:var(--soft); --fc-button-hover-border-color:#cfd5df; --fc-button-active-bg-color:var(--ink); --fc-button-active-border-color:var(--ink); --fc-event-bg-color:var(--blue); --fc-event-border-color:var(--blue); --fc-today-bg-color:#f4f8fb; font-size:.93rem; }
+    .fc .fc-toolbar-title { font-size:1.05rem; font-weight:700; }
+    .fc .fc-button { box-shadow:none!important; border-radius:8px!important; text-transform:none; font-weight:650; }
+    .fc .fc-list-event:hover td { background:var(--soft); }
+    .subscribe-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:12px; margin-top:20px; }
+    .provider { border:1px solid var(--line); border-radius:12px; padding:18px; min-width:0; }
+    .provider h3 { margin:0 0 8px; font-size:1rem; }
+    .provider p { margin:0 0 16px; color:var(--muted); line-height:1.45; font-size:.9rem; min-height:3.9em; }
+    .button, button { appearance:none; display:inline-flex; justify-content:center; align-items:center; min-height:42px; width:100%; padding:9px 12px; border:1px solid var(--line); border-radius:9px; background:#fff; color:var(--ink); text-decoration:none; font:inherit; font-weight:650; cursor:pointer; }
+    .button:hover, button:hover { background:var(--soft); border-color:#cfd5df; }
+    .button.primary { background:var(--ink); border-color:var(--ink); color:#fff; }
+    .feed { display:flex; align-items:center; gap:10px; margin-top:14px; padding:12px 13px; background:var(--soft); border-radius:10px; }
+    code { flex:1; min-width:0; overflow-wrap:anywhere; font-size:.82rem; color:#344054; }
+    .feed button { width:auto; min-width:72px; min-height:36px; }
+    .status { min-height:1.2em; margin:8px 0 0; font-size:.86rem; color:var(--muted); }
     details { border-top:1px solid var(--line); padding:14px 0; }
     details:first-of-type { border-top:0; }
-    summary { font-weight:750; cursor:pointer; }
+    summary { cursor:pointer; font-weight:650; }
+    ol { margin-bottom:0; padding-left:22px; }
     li { margin:7px 0; line-height:1.45; }
-    footer { text-align:center; color:var(--muted); font-size:.85rem; margin-top:26px; }
-    footer a { color:inherit; }
-    @media (max-width:700px) { .hero-inner { min-height:180px; gap:18px; } .crest { width:100px; height:100px; border-radius:18px; } .actions { grid-template-columns:1fr 1fr; } .card { padding:16px; } }
-    @media (max-width:430px) { .hero-inner { align-items:flex-start; } .crest { width:78px; height:78px; } .actions { grid-template-columns:1fr; } .feed { align-items:stretch; flex-direction:column; } .feed button { width:100%; } }
+    footer { display:flex; justify-content:space-between; gap:16px; flex-wrap:wrap; color:var(--muted); font-size:.84rem; padding:28px 0 36px; border-top:1px solid var(--line); }
+    @media (max-width:780px) { .subscribe-grid { grid-template-columns:1fr 1fr; } }
+    @media (max-width:560px) {
+      .masthead { gap:16px; padding:24px 0; }
+      .crest { width:78px; height:78px; }
+      .subscribe-grid { grid-template-columns:1fr; }
+      .provider p { min-height:0; }
+      #calendar { padding:10px; }
+      .fc .fc-toolbar { gap:10px; align-items:flex-start; }
+      .fc .fc-toolbar.fc-header-toolbar { flex-wrap:wrap; }
+      .fc .fc-toolbar-chunk:nth-child(2) { order:-1; width:100%; }
+      .feed { flex-direction:column; align-items:stretch; }
+      .feed button { width:100%; }
+    }
   </style>
-  <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.19/index.global.min.js" defer></script>
-  <script src="https://cdn.jsdelivr.net/npm/@fullcalendar/icalendar@6.1.19/index.global.min.js" defer></script>
 </head>
 <body>
-  <header class="hero">
-    <div class="hero-inner">
+  <header>
+    <div class="wrap masthead">
       <img class="crest" src="https://www.fussball-im-verein.de/uwappen/7321_askania-logo-farbe.png" alt="SV Askania Coepenick 1913 crest" />
       <div>
-        <div class="kicker">Berlin-Liga · 2026/27</div>
-        <h1>Askania Futsal</h1>
-        <p>Fixtures & calendar subscription</p>
+        <h1>Askania Coepenick Futsal</h1>
+        <div class="season">Match calendar · 2026/27</div>
       </div>
     </div>
   </header>
 
-  <main>
-    <section class="card">
+  <main class="wrap">
+    <section class="section">
       <div class="section-head">
-        <div><h2>Fixtures</h2><div class="muted">Always loaded from the current calendar feed.</div></div>
+        <div>
+          <h2>Fixtures</h2>
+          <div class="muted">The preview reads directly from the same calendar feed used for subscriptions.</div>
+        </div>
       </div>
-      <div id="calendar"><p class="muted">Loading fixtures…</p></div>
+      <div class="calendar-shell">
+        <div id="calendar"><p class="muted">Loading fixtures…</p></div>
+      </div>
     </section>
 
-    <section class="card">
-      <h2>Subscribe to updates</h2>
-      <p class="muted">Subscribe by URL rather than importing the file. When the fixture feed changes, your calendar app can fetch the updates.</p>
-      <div class="actions">
-        <a class="button primary" href="webcal://indieveed.github.io/askania-futsal/askania-games-2026-27.ics">Apple Calendar</a>
-        <button id="google-button" type="button">Google Calendar</button>
-        <button id="outlook-button" type="button">Outlook</button>
-        <button id="copy-button" type="button">Copy feed URL</button>
+    <section class="section">
+      <h2>Subscribe to calendar</h2>
+      <p class="muted">Subscribe by URL instead of importing the file. Calendar apps can then pick up fixture changes when the feed is updated.</p>
+
+      <div class="subscribe-grid">
+        <div class="provider">
+          <h3>Apple Calendar</h3>
+          <p>Open the subscription directly on an Apple device.</p>
+          <a class="button primary" href="webcal://indieveed.github.io/askania-futsal/askania-games-2026-27.ics">Subscribe</a>
+        </div>
+        <div class="provider">
+          <h3>Google Calendar</h3>
+          <p>Copy the feed URL, then add it under Other calendars → From URL.</p>
+          <button id="google-button" type="button">Add from URL</button>
+        </div>
+        <div class="provider">
+          <h3>Outlook</h3>
+          <p>Copy the feed URL, then choose Add calendar → Subscribe from web.</p>
+          <button id="outlook-button" type="button">Subscribe from web</button>
+        </div>
+        <div class="provider">
+          <h3>Other apps</h3>
+          <p>Use the iCalendar URL in any app that supports remote ICS subscriptions.</p>
+          <button id="copy-button" type="button">Copy URL</button>
+        </div>
       </div>
-      <div class="feed"><code id="feed-url">https://indieveed.github.io/askania-futsal/askania-games-2026-27.ics</code><button id="copy-small" type="button">Copy</button></div>
+
+      <div class="feed">
+        <code>https://indieveed.github.io/askania-futsal/askania-games-2026-27.ics</code>
+        <button id="copy-small" type="button">Copy</button>
+      </div>
       <p class="status" id="status" aria-live="polite"></p>
     </section>
 
-    <section class="card">
-      <h2 style="margin-bottom:10px">How to subscribe</h2>
-      <details><summary>Google Calendar</summary><ol><li>Open Google Calendar on the web.</li><li>Next to <strong>Other calendars</strong>, choose <strong>+</strong> → <strong>From URL</strong>.</li><li>Paste the feed URL and choose <strong>Add calendar</strong>.</li></ol></details>
-      <details><summary>Outlook</summary><ol><li>Open Outlook Calendar.</li><li>Choose <strong>Add calendar</strong> → <strong>Subscribe from web</strong>.</li><li>Paste the feed URL and confirm.</li></ol></details>
-      <details><summary>Other calendar apps</summary><p>Look for <strong>Subscribe by URL</strong>, <strong>Add calendar from URL</strong>, <strong>iCalendar subscription</strong>, or <strong>Web calendar</strong>, and use the feed URL above.</p></details>
+    <section class="section">
+      <h2 style="margin-bottom:10px">Instructions</h2>
+      <details><summary>Google Calendar</summary><ol><li>Open Google Calendar on the web.</li><li>Next to <strong>Other calendars</strong>, choose <strong>+</strong> → <strong>From URL</strong>.</li><li>Paste the calendar URL and choose <strong>Add calendar</strong>.</li></ol></details>
+      <details><summary>Outlook</summary><ol><li>Open Outlook Calendar.</li><li>Choose <strong>Add calendar</strong> → <strong>Subscribe from web</strong>.</li><li>Paste the calendar URL and confirm.</li></ol></details>
+      <details><summary>Other calendar apps</summary><p class="muted">Look for an option such as <strong>Subscribe by URL</strong>, <strong>Add calendar from URL</strong>, <strong>Web calendar</strong>, or <strong>iCalendar subscription</strong>.</p></details>
     </section>
-
-    <footer>SV Askania Coepenick 1913 · <a href="https://www.askania-coepenick.de/">official club website</a></footer>
   </main>
+
+  <footer class="wrap">
+    <span>SV Askania Coepenick 1913 e.V.</span>
+    <a href="https://www.askania-coepenick.de/">askania-coepenick.de</a>
+  </footer>
 
   <script>
     const feedUrl='https://indieveed.github.io/askania-futsal/askania-games-2026-27.ics';
     const statusEl=document.getElementById('status');
-    async function copyFeed(message='Calendar feed URL copied.') { try { await navigator.clipboard.writeText(feedUrl); statusEl.textContent=message; return true; } catch { statusEl.textContent='Copy the calendar feed URL shown above.'; return false; } }
+
+    async function copyFeed(message='Calendar URL copied.') {
+      try {
+        await navigator.clipboard.writeText(feedUrl);
+        statusEl.textContent=message;
+        return true;
+      } catch {
+        statusEl.textContent='Copy the calendar URL shown above.';
+        return false;
+      }
+    }
+
     document.getElementById('copy-button').addEventListener('click',()=>copyFeed());
     document.getElementById('copy-small').addEventListener('click',()=>copyFeed());
-    document.getElementById('google-button').addEventListener('click',async()=>{ await copyFeed('Feed URL copied. Paste it into “From URL” in Google Calendar.'); window.open('https://calendar.google.com/calendar/u/0/r/settings/addbyurl','_blank','noopener'); });
-    document.getElementById('outlook-button').addEventListener('click',async()=>{ await copyFeed('Feed URL copied. Paste it into “Subscribe from web” in Outlook.'); window.open('https://outlook.live.com/calendar/0/view/month','_blank','noopener'); });
-    window.addEventListener('load',()=>{
+    document.getElementById('google-button').addEventListener('click',async()=>{
+      await copyFeed('Calendar URL copied. Paste it into “From URL” in Google Calendar.');
+      window.open('https://calendar.google.com/calendar/u/0/r/settings/addbyurl','_blank','noopener');
+    });
+    document.getElementById('outlook-button').addEventListener('click',async()=>{
+      await copyFeed('Calendar URL copied. Paste it into “Subscribe from web” in Outlook.');
+      window.open('https://outlook.live.com/calendar/0/view/month','_blank','noopener');
+    });
+
+    function unfoldIcs(text) {
+      return text.replace(/\r?\n[ \t]/g,'').split(/\r?\n/);
+    }
+
+    function unescapeIcs(value='') {
+      return value.replace(/\\n/gi,'\n').replace(/\\,/g,',').replace(/\\;/g,';').replace(/\\\\/g,'\\');
+    }
+
+    function parseLocalDate(value) {
+      const m=value.match(/^(\d{4})(\d{2})(\d{2})T(\d{2})(\d{2})(\d{2})/);
+      if(!m) return null;
+      return `${m[1]}-${m[2]}-${m[3]}T${m[4]}:${m[5]}:${m[6]}`;
+    }
+
+    function parseIcs(text) {
+      const lines=unfoldIcs(text);
+      const events=[];
+      let current=null;
+      for(const line of lines) {
+        if(line==='BEGIN:VEVENT') { current={}; continue; }
+        if(line==='END:VEVENT') {
+          if(current?.start && current?.title) events.push(current);
+          current=null;
+          continue;
+        }
+        if(!current) continue;
+        const colon=line.indexOf(':');
+        if(colon<0) continue;
+        const key=line.slice(0,colon).split(';')[0];
+        const value=line.slice(colon+1);
+        if(key==='SUMMARY') current.title=unescapeIcs(value);
+        else if(key==='DTSTART') current.start=parseLocalDate(value);
+        else if(key==='DTEND') current.end=parseLocalDate(value);
+        else if(key==='LOCATION') current.extendedProps={...(current.extendedProps||{}),location:unescapeIcs(value)};
+      }
+      return events;
+    }
+
+    window.addEventListener('load',async()=>{
       const el=document.getElementById('calendar');
-      if(!window.FullCalendar){ el.innerHTML='<p class="muted">The fixture preview could not be loaded. The subscription feed still works.</p>'; return; }
-      el.innerHTML='';
-      const calendar=new FullCalendar.Calendar(el,{ plugins:[FullCalendar.ICalendar], initialView:window.innerWidth<650?'listYear':'dayGridMonth', headerToolbar:{left:'prev,next today',center:'title',right:'dayGridMonth,listYear'}, height:'auto', firstDay:1, locale:'en-gb', events:{url:feedUrl,format:'ics'}, eventTimeFormat:{hour:'2-digit',minute:'2-digit',hour12:false}, listDayFormat:{weekday:'long',day:'numeric',month:'long'}, noEventsContent:'No fixtures in this period' });
-      calendar.render();
+      if(!window.FullCalendar) {
+        el.innerHTML='<p class="muted">The fixture preview could not be loaded. The subscription feed still works.</p>';
+        return;
+      }
+      try {
+        const response=await fetch(`askania-games-2026-27.ics?v=${Date.now()}`,{cache:'no-store'});
+        if(!response.ok) throw new Error('Feed unavailable');
+        const events=parseIcs(await response.text());
+        el.innerHTML='';
+        const calendar=new FullCalendar.Calendar(el,{
+          initialView:window.innerWidth<650?'listYear':'listYear',
+          headerToolbar:{left:'prev,next today',center:'title',right:'listYear,dayGridMonth'},
+          buttonText:{listYear:'List',dayGridMonth:'Calendar',today:'Today'},
+          height:'auto',
+          firstDay:1,
+          locale:'en-gb',
+          timeZone:'Europe/Berlin',
+          events,
+          eventTimeFormat:{hour:'2-digit',minute:'2-digit',hour12:false},
+          listDayFormat:{weekday:'long',day:'numeric',month:'long'},
+          listDaySideFormat:false,
+          noEventsContent:'No fixtures in this period',
+          eventDidMount(info) {
+            const location=info.event.extendedProps.location;
+            if(location) info.el.title=location;
+          }
+        });
+        calendar.render();
+      } catch {
+        el.innerHTML='<p class="muted">The fixture preview could not be loaded. The subscription feed still works.</p>';
+      }
     });
   </script>
 </body>
