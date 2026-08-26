@@ -86,18 +86,6 @@
 
   <main class="wrap">
     <section class="section">
-      <div class="section-head">
-        <div>
-          <h2>Fixtures</h2>
-          <div class="muted">The preview reads directly from the same calendar feed used for subscriptions.</div>
-        </div>
-      </div>
-      <div class="calendar-shell">
-        <div id="calendar"><p class="muted">Loading fixtures…</p></div>
-      </div>
-    </section>
-
-    <section class="section">
       <h2>Subscribe to calendar</h2>
       <p class="muted">Subscribe by URL instead of importing the file. Calendar apps can then pick up fixture changes when the feed is updated.</p>
 
@@ -129,6 +117,18 @@
         <button id="copy-small" type="button">Copy</button>
       </div>
       <p class="status" id="status" aria-live="polite"></p>
+    </section>
+
+    <section class="section">
+      <div class="section-head">
+        <div>
+          <h2>Fixtures</h2>
+          <div class="muted">The preview reads directly from the same calendar feed used for subscriptions.</div>
+        </div>
+      </div>
+      <div class="calendar-shell">
+        <div id="calendar"><p class="muted">Loading fixtures…</p></div>
+      </div>
     </section>
 
     <section class="section">
@@ -220,7 +220,7 @@
         const events=parseIcs(await response.text());
         el.innerHTML='';
         const calendar=new FullCalendar.Calendar(el,{
-          initialView:window.innerWidth<650?'listYear':'listYear',
+          initialView:'listYear',
           headerToolbar:{left:'prev,next today',center:'title',right:'listYear,dayGridMonth'},
           buttonText:{listYear:'List',dayGridMonth:'Calendar',today:'Today'},
           height:'auto',
