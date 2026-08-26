@@ -1,0 +1,136 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Askania Futsal — Subscribe to fixtures</title>
+  <meta name="description" content="Subscribe to Askania Coepenick futsal fixtures for the 2026/27 Berlin-Liga season." />
+  <style>
+    :root {
+      color-scheme: light dark;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      background: Canvas;
+      color: CanvasText;
+    }
+    main {
+      width: min(680px, calc(100% - 32px));
+      margin: 48px auto;
+    }
+    h1 { margin-bottom: 8px; }
+    p { line-height: 1.5; }
+    .note {
+      margin: 24px 0;
+      padding: 14px 16px;
+      border: 1px solid color-mix(in srgb, CanvasText 18%, transparent);
+      border-radius: 12px;
+    }
+    .actions {
+      display: grid;
+      gap: 12px;
+      margin: 24px 0 32px;
+    }
+    a.button, button {
+      appearance: none;
+      box-sizing: border-box;
+      width: 100%;
+      padding: 14px 16px;
+      border: 1px solid color-mix(in srgb, CanvasText 24%, transparent);
+      border-radius: 10px;
+      background: Canvas;
+      color: CanvasText;
+      font: inherit;
+      font-weight: 600;
+      text-align: center;
+      text-decoration: none;
+      cursor: pointer;
+    }
+    a.button:hover, button:hover {
+      background: color-mix(in srgb, CanvasText 7%, Canvas);
+    }
+    code {
+      overflow-wrap: anywhere;
+      font-size: .9em;
+    }
+    ol { padding-left: 22px; }
+    li { margin: 8px 0; line-height: 1.45; }
+    .provider { margin-top: 28px; }
+    .status { min-height: 1.5em; font-size: .9em; }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>Askania Futsal fixtures</h1>
+    <p>2026/27 Berlin-Liga. Subscribe to the calendar instead of importing the file, so fixture changes can update automatically.</p>
+
+    <div class="note">
+      <strong>Calendar feed</strong><br />
+      <code id="feed-url">https://indieveed.github.io/askania-futsal/askania-games-2026-27.ics</code>
+    </div>
+
+    <div class="actions">
+      <a class="button" href="webcal://indieveed.github.io/askania-futsal/askania-games-2026-27.ics">Subscribe with Apple Calendar</a>
+      <button id="google-button" type="button">Subscribe with Google Calendar</button>
+      <button id="outlook-button" type="button">Subscribe with Outlook</button>
+      <button id="copy-button" type="button">Copy calendar URL</button>
+    </div>
+    <p class="status" id="status" aria-live="polite"></p>
+
+    <section class="provider">
+      <h2>Google Calendar</h2>
+      <ol>
+        <li>Open Google Calendar on the web.</li>
+        <li>Next to <strong>Other calendars</strong>, choose <strong>+</strong> → <strong>From URL</strong>.</li>
+        <li>Paste the calendar feed URL above and choose <strong>Add calendar</strong>.</li>
+      </ol>
+    </section>
+
+    <section class="provider">
+      <h2>Outlook</h2>
+      <ol>
+        <li>Open Outlook Calendar.</li>
+        <li>Choose <strong>Add calendar</strong> → <strong>Subscribe from web</strong>.</li>
+        <li>Paste the calendar feed URL above and confirm.</li>
+      </ol>
+    </section>
+
+    <section class="provider">
+      <h2>Other calendar apps</h2>
+      <p>Look for an option such as <strong>Subscribe by URL</strong>, <strong>Add calendar from URL</strong>, or <strong>Web calendar</strong>, then use the feed URL above.</p>
+    </section>
+  </main>
+
+  <script>
+    const feedUrl = 'https://indieveed.github.io/askania-futsal/askania-games-2026-27.ics';
+    const status = document.getElementById('status');
+
+    async function copyFeed(message = 'Calendar URL copied.') {
+      try {
+        await navigator.clipboard.writeText(feedUrl);
+        status.textContent = message;
+        return true;
+      } catch {
+        status.textContent = 'Copy the calendar URL shown above.';
+        return false;
+      }
+    }
+
+    document.getElementById('copy-button').addEventListener('click', () => copyFeed());
+
+    document.getElementById('google-button').addEventListener('click', async () => {
+      await copyFeed('Calendar URL copied. Paste it into “From URL” in Google Calendar.');
+      window.open('https://calendar.google.com/calendar/u/0/r/settings/addbyurl', '_blank', 'noopener');
+    });
+
+    document.getElementById('outlook-button').addEventListener('click', async () => {
+      await copyFeed('Calendar URL copied. Paste it into “Subscribe from web” in Outlook.');
+      window.open('https://outlook.live.com/calendar/0/view/month', '_blank', 'noopener');
+    });
+  </script>
+</body>
+</html>
